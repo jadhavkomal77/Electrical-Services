@@ -130,7 +130,9 @@ app.use(express.json());
 /* ================= CORS ================= */
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://electrical-services-amber.vercel.app"
+  "https://electrical-services.onrender.com",
+  
+  // "https://electrical-services-amber.vercel.app"
 ];
 
 app.use(
