@@ -130,8 +130,7 @@ app.use(express.json());
 /* ================= CORS ================= */
 const allowedOrigins = [
   "http://localhost:5173",
-  // 👉 इथे तुझा Vercel frontend URL टाक
-  // "https://your-frontend.vercel.app"
+  "https://electrical-services-amber.vercel.app"
 ];
 
 app.use(
