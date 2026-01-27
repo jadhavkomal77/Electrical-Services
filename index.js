@@ -120,6 +120,8 @@ import navbarRoutes from "./routes/navbarRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import pricingRoutes from "./routes/pricingRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
+import footerRoutes from "./routes/footerRoutes.js";
 
 const app = express();
 const __dirname = path.resolve();
@@ -130,9 +132,7 @@ app.use(express.json());
 /* ================= CORS ================= */
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://electrical-services.onrender.com",
-  
-  // "https://electrical-services-amber.vercel.app"
+  "https://electrical-services-frantend-h1iy.vercel.app",
 ];
 
 app.use(
@@ -161,6 +161,8 @@ app.use("/api/adminnavbar", navbarRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/booking", bookingRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/footer", footerRoutes);
 
 /* ================= TEST ROUTE ================= */
 app.get("/", (req, res) => {
