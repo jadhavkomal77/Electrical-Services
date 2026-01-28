@@ -1,26 +1,34 @@
 import express from "express";
 import {
-  getAdminServices,
+  createService,
   getPublicServices,
-  addService,
-  updateService,
+  getAdminServices,
   getServiceBySlug,
+  updateService,
   deleteService,
+  getPublicServiceBySlug,
 } from "../controllers/adminServiceController.js";
-import adminAuth from "../middlewares/adminAuth.js";
 import upload from "../utils/upload.js";
 
 const router = express.Router();
 
-router.get("/public", getPublicServices);
-router.get("/public/:slug", getServiceBySlug);
+router.post(
+  "/",
+  upload.fields([{ name: "projects", maxCount: 10 }]),
+  createService
+);
 
-router.get("/", adminAuth, getAdminServices);
+router.get("/", getPublicServices);
+router.get("/admin", getAdminServices);
+router.get("/:slug", getServiceBySlug);
 
-/* 🔥 multiple project images */
-router.post("/", adminAuth, upload.array("projectImages"), addService);
-router.put("/:id", adminAuth, upload.array("projectImages"), updateService);
+router.put(
+  "/:id",
+  upload.fields([{ name: "projects", maxCount: 10 }]),
+  updateService
+);
 
-router.delete("/:id", adminAuth, deleteService);
+router.delete("/:id", deleteService);
+router.get("/public/:slug", getPublicServiceBySlug); 
 
 export default router;

@@ -7,7 +7,7 @@ const featureSchema = new mongoose.Schema({
 });
 
 const processSchema = new mongoose.Schema({
-  step: Number,
+  step: Number,      // 1,2,3,4
   title: String,
   desc: String,
 });
@@ -15,7 +15,7 @@ const processSchema = new mongoose.Schema({
 const projectSchema = new mongoose.Schema({
   title: String,
   desc: String,
-  image: String,
+  image: String,    // cloudinary url
   tech: [String],
 });
 
@@ -23,16 +23,16 @@ const serviceSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     shortDesc: { type: String, required: true },
-    longDesc: { type: String },
+    longDesc: String,
 
     slug: { type: String, unique: true },
 
     icon: { type: String, default: "⚡" },
 
-    whyChoose: [featureSchema],       
-    process: [processSchema],        
-    technologies: [String],           
-    projects: [projectSchema],        
+    whyChoose: [featureSchema],    // icon, title, desc
+    process: [processSchema],     // step, title, desc
+    technologies: [String],
+    projects: [projectSchema],    // title, desc, image, tech
 
     isActive: { type: Boolean, default: true },
   },
