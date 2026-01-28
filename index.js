@@ -215,7 +215,7 @@ app.use(cookieParser());
 /* ================= CORS ================= */
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://electrical-services-frantend-jw4x.vercel.app",
     credentials: true,
   })
 );
