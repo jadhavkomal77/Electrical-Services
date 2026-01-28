@@ -1,4 +1,3 @@
-// routes/serviceRoutes.js
 import express from "express";
 import {
   getAdminServices,
@@ -6,18 +5,22 @@ import {
   addService,
   updateService,
   getServiceBySlug,
+  deleteService,
 } from "../controllers/adminServiceController.js";
 import adminAuth from "../middlewares/adminAuth.js";
+import upload from "../utils/upload.js";
 
 const router = express.Router();
 
-/* 🌍 Public */
 router.get("/public", getPublicServices);
-
-/* 🔐 Admin */
-router.get("/", adminAuth, getAdminServices);
-router.post("/", adminAuth, addService);
-router.put("/:id", adminAuth, updateService);
 router.get("/public/:slug", getServiceBySlug);
+
+router.get("/", adminAuth, getAdminServices);
+
+/* 🔥 multiple project images */
+router.post("/", adminAuth, upload.array("projectImages"), addService);
+router.put("/:id", adminAuth, upload.array("projectImages"), updateService);
+
+router.delete("/:id", adminAuth, deleteService);
 
 export default router;
