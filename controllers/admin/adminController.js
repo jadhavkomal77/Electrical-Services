@@ -7,9 +7,12 @@ import cloudinary from "../../utils/cloudinary.js";
 
 const JWT_SECRET = process.env.JWT_KEY;
 
-/* ================= AUTH ================= */
+const cookieOptions =
+  process.env.NODE_ENV === "production"
+    ? { httpOnly: true, sameSite: "none", secure: true }
+    : { httpOnly: true, sameSite: "lax", secure: false };
 
-// ✅ Register
+
 export const adminRegister = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
@@ -72,9 +75,13 @@ export const adminLogin = async (req, res) => {
     );
 
     // ✅ SIMPLE LOCAL COOKIE
-    res.cookie("adminToken", token, {
-      httpOnly: true,
-    });
+    // res.cookie("adminToken", token, {
+    //   httpOnly: true,
+    //   secure:true,
+    //   sameSite:"none"
+    // });
+
+    res.cookie("adminToken", token, cookieOptions);
 
     res.json({
       success: true,

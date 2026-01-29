@@ -1,9 +1,10 @@
-
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import path from "path";
 import cookieParser from "cookie-parser";
+import fs from "fs";
 
 import adminRoutes from "./routes/admin/adminRoutes.js";
 import adminHeroRoutes from "./routes/adminHeroRoutes.js";
@@ -16,20 +17,36 @@ import bookingRoutes from "./routes/bookingRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import footerRoutes from "./routes/footerRoutes.js";
 
+
 const app = express();
+const __dirname = path.resolve();
 
-/* MIDDLEWARE */
-app.use(express.json());
 app.use(cookieParser());
+app.use(express.json());
 
-/* CORS */
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://electrical-services-frantend-jw4x.vercel.app"
+
+];
+
 app.use(
   cors({
-    // origin: "http://localhost:5173",
-    origin: "https://electrical-services-frantend-jw4x.vercel.app",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 /* ROUTES */
 app.use("/api/admin", adminRoutes);
@@ -43,17 +60,40 @@ app.use("/api/booking", bookingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/footer", footerRoutes);
 
-/* TEST */
 app.get("/", (req, res) => {
-  res.json("Server is running 🚀");
+  res.json("Server is Running! 🚀");
 });
 
-/* DB */
+
+
+if (process.env.NODE_ENV === "production") {
+  const distPath = path.join(__dirname, "dist");
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    // app.get("*", (req, res) => {
+    //   res.sendFile(path.join(distPath, "index.html"));
+    // });
+  }
+}
+
+const PORT = process.env.PORT || 5000;
+
+
+if (!process.env.MONGO_URL) {
+  console.error("❌ FATAL: MONGO_URL environment variable is missing!");
+}
+
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log("❌ Mongo error", err));
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
-/* START */
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server on ${PORT}`));
+
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running locally on port ${PORT}`);
+  });
+}
+
+
+export default app;
