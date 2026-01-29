@@ -74,12 +74,7 @@ export const adminLogin = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    // ✅ SIMPLE LOCAL COOKIE
-    // res.cookie("adminToken", token, {
-    //   httpOnly: true,
-    //   secure:true,
-    //   sameSite:"none"
-    // });
+    // COOKIE
 
     res.cookie("adminToken", token, cookieOptions);
 
@@ -96,12 +91,14 @@ export const adminLogin = async (req, res) => {
   }
 };
 
-// ✅ Logout
 export const adminLogout = async (req, res) => {
   try {
-    res.clearCookie("adminToken");
-    res.json({ success: true, message: "Logged out successfully" });
-  } catch {
+    res.clearCookie("adminToken", cookieOptions);
+    res.json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
     res.status(500).json({ message: "Logout error" });
   }
 };
