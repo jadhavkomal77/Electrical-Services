@@ -18,11 +18,11 @@ import footerRoutes from "./routes/footerRoutes.js";
 
 const app = express();
 
-/* ================= MIDDLEWARE ================= */
+/* MIDDLEWARE */
 app.use(express.json());
 app.use(cookieParser());
 
-/* ================= CORS ================= */
+/* CORS */
 app.use(
   cors({
     // origin: "http://localhost:5173",
@@ -31,7 +31,7 @@ app.use(
   })
 );
 
-/* ================= ROUTES ================= */
+/* ROUTES */
 app.use("/api/admin", adminRoutes);
 app.use("/api/adminservice", serviceRoutes);
 app.use("/api/adminhero", adminHeroRoutes);
@@ -43,17 +43,17 @@ app.use("/api/booking", bookingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/footer", footerRoutes);
 
-/* ================= TEST ================= */
+/* TEST */
 app.get("/", (req, res) => {
   res.json("Server is running 🚀");
 });
 
-/* ================= DB ================= */
+/* DB */
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log("❌ Mongo error", err));
 
-/* ================= START ================= */
+/* START */
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server on ${PORT}`));
