@@ -18,9 +18,10 @@ router.post(
   createService
 );
 
-router.get("/", getPublicServices);
-router.get("/admin", getAdminServices);
-router.get("/:slug", getServiceBySlug);
+router.get("/admin", getAdminServices);          // 🔐 admin first
+router.get("/public/:slug", getPublicServiceBySlug); // 🌍 public single
+router.get("/", getPublicServices);              // 🌍 public list
+router.get("/:slug", getServiceBySlug);          // admin single
 
 router.put(
   "/:id",
@@ -29,6 +30,9 @@ router.put(
 );
 
 router.delete("/:id", deleteService);
-router.get("/public/:slug", getPublicServiceBySlug); 
 
 export default router;
+
+
+
+
